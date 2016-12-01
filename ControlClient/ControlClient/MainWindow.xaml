@@ -8,7 +8,7 @@
         BorderThickness="2"
         Width="800"
         Height="600"
-        Icon=".\img\logo.png"
+        Icon=".\img\logo.jpg"
         KeyDown="ShowData_KeyDown" KeyUp="ShowData_KeyUp"
         >
     <Grid Background="White">
