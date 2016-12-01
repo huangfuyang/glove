@@ -286,3 +286,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+SpaceShooter/Assembly-CSharp.csproj
+SpaceShooter/SpaceShooter.sln

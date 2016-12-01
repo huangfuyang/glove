@@ -125,6 +125,20 @@
     <Resource Include="img\user.png" />
     <Resource Include="img\zuixiaohua.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="img\aboutus.png" />
+    <Resource Include="img\addGame.png" />
+    <Resource Include="img\clearGame.png" />
+    <Resource Include="img\exitAll.png" />
+    <Resource Include="img\face.png" />
+    <Resource Include="img\logo.png" />
+    <Resource Include="img\maximize.png" />
+    <Resource Include="img\minimize.png" />
+    <Resource Include="img\service_off.png" />
+    <Resource Include="img\service_on.png" />
+    <Resource Include="img\switchLogin_enter.png" />
+    <Resource Include="img\switchLogin_Leave.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
