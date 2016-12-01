@@ -6,6 +6,10 @@ public class Done_DestroyByContact : MonoBehaviour
 	public GameObject explosion;
 	public GameObject playerExplosion;
 	public int scoreValue;
+    //
+    public int TotalValue=1;
+    public int MissValue=1;
+
 	private Done_GameController gameController;
 
 	void Start ()
@@ -21,14 +25,26 @@ public class Done_DestroyByContact : MonoBehaviour
 		}
 	}
 
+    void OnTriggerExit(Collider other) {
+        if (other.tag == "Boundary") {
+            gameController.AddMiss(MissValue);
+        }
+          
+    }
+
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag == "Boundary" || other.tag == "Enemy")
+		if (other.tag == "Boundary")
 		{
-			return;
+            gameController.AddTotal(TotalValue);
+            return;
 		}
+        if (other.tag == "Enemy")
+        {
+            return;
+        }
 
-		if (explosion != null)
+        if (explosion != null)
 		{
 			Instantiate(explosion, transform.position, transform.rotation);
 		}
