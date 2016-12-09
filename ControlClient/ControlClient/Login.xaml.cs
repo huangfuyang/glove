@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,22 +22,25 @@ namespace ControlClient
     /// </summary>
     public partial class Login : Window
     {
-        public Login()
+        public static String UserName;
+        private Label loginstatus;
+        public Login(Label loginStatus)
         {
             InitializeComponent();
+            this.loginstatus = loginStatus;
         }
 
         private void UserName_MouseEnter(object sender, MouseEventArgs e)
         {
-            if("请输入用户名".Equals(userName.Text.ToString()))
-            userName.Clear();
+            if ("请输入用户名".Equals(userNameText.Text.ToString()))
+                userNameText.Clear();
         }
 
         private void userName_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (userName.Text==null||"".Equals(userName.Text.ToString()))
+            if (userNameText.Text == null || "".Equals(userNameText.Text.ToString()))
             {
-                userName.AppendText("请输入用户名");
+                userNameText.AppendText("请输入用户名");
             }
         }
 
@@ -53,29 +59,38 @@ namespace ControlClient
                 {
                     this.DragMove();
                 }
-            }  
-        }
-
-        private void passWord_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if ("请输入密码".Equals(passTip.Content.ToString())) { 
-                passTip.Content = "";
-                passTip.Visibility = Visibility.Hidden;
             }
         }
 
-        private void passWord_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (password.Password ==null || "".Equals(password.Password.ToString()))
-            {
-                passTip.Content = "请输入密码";
-                passTip.Visibility = Visibility.Visible;
-            }
-        }
         //登录操作
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-
+            String username = userNameText.Text.ToString();
+            UserName = username;
+            String password = passwordText.Password.ToString();
+            String url = "http://localhost:8080/patient/login";
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("username", username);
+            parameters.Add("password", password);
+            HttpWebResponse response = HttpWebResponseUtility.CreatePostHttpResponse(url, parameters, null, null, Encoding.UTF8, null);
+            Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+            StreamReader readStream = new StreamReader(response.GetResponseStream(), encode);
+            Char[] read = new Char[256];
+            int count = readStream.Read(read, 0, 256);
+            String str = "";
+            while (count > 0)
+            {
+                str += new String(read, 0, count);
+                Console.Write(str);
+                count = readStream.Read(read, 0, 256);
+            }
+            if (str != null || !str.Equals(""))
+            {
+                str = str.Replace("\"", "'");  //java和c#的json格式转化
+                Patient patient = JsonConvert.DeserializeObject<Patient>(str);
+                loginstatus.Content = "你好！" + patient.realname;
+                this.Close();
+            }
         }
 
         //取消操作
@@ -87,41 +102,52 @@ namespace ControlClient
         private void Image_MouseEnter(object sender, MouseEventArgs e)
         {
             Image img = (Image)sender;
-            img.Source = new BitmapImage(new Uri("./img/switchLogin_enter.png",UriKind.Relative));
-            loginTip.Visibility = Visibility.Visible;
+            img.Source = new BitmapImage(new Uri("./img/switchLogin_enter.png", UriKind.Relative));
         }
 
         private void Image_MouseLeave(object sender, MouseEventArgs e)
         {
             Image img = (Image)sender;
             img.Source = new BitmapImage(new Uri("./img/switchLogin_Leave.png", UriKind.Relative));
-            loginTip.Visibility = Visibility.Hidden;
         }
 
         bool loginMethod = true;
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (loginMethod) {
-            faceLogin.Visibility = Visibility.Visible;
-            content.Children.Clear();
-            content.Children.Add(switchBtn);
-            faceLogin.Source = new BitmapImage(new Uri("./img/face.png", UriKind.Relative));
-            loginMethod = false;
+            if (loginMethod)
+            {
+                faceLogin.Visibility = Visibility.Visible;
+                content.Children.Clear();
+                content.Children.Add(switchBtn);
+                faceLogin.Source = new BitmapImage(new Uri("./img/face.png", UriKind.Relative));
+                loginMethod = false;
             }
             else
             {
                 faceLogin.Visibility = Visibility.Hidden;
                 content.Children.Clear();
                 content.Children.Add(switchBtn);
-                content.Children.Add(passTip);
-                content.Children.Add(password);
-                content.Children.Add(userName);
+                content.Children.Add(passwordText);
+                content.Children.Add(userNameText);
                 content.Children.Add(login);
                 content.Children.Add(cancel);
-                content.Children.Add(loginTip);
                 loginMethod = true;
             }
         }
 
+        private void userNameText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if ("请输入用户名".Equals(userNameText.Text.ToString()))
+            {
+                userNameText.Text = "";
+            }
+        }
+        private void userNameText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (userNameText.Text.ToString() == null || userNameText.Text.ToString().Equals(""))
+            {
+                userNameText.Text = "请输入用户名";
+            }
+        }
     }
 }

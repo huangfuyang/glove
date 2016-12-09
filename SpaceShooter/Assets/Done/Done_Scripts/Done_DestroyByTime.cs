@@ -7,6 +7,7 @@ public class Done_DestroyByTime : MonoBehaviour
 
 	void Start ()
 	{
+
 		Destroy (gameObject, lifetime);
 	}
 }

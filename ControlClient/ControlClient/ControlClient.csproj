@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ControlClient</RootNamespace>
     <AssemblyName>ControlClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,15 +39,21 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icLauncher.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GloveLibPC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>libs\GloveLibPC.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -71,13 +78,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CommandData.cs" />
+    <Compile Include="ControlServerManage.cs" />
+    <Compile Include="Doctor.cs" />
     <Compile Include="GloveConfigView.xaml.cs">
       <DependentUpon>GloveConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GloveData.cs" />
     <Compile Include="GloveModule.cs" />
+    <Compile Include="HttpWebResponseUtility.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Patient.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="WebSockData.cs" />
     <Page Include="GloveConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -130,10 +144,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="img\addGame.jpg" />
     <Resource Include="img\error.png" />
     <Resource Include="img\exit.png" />
-    <Resource Include="img\logo.jpg" />
     <Resource Include="img\scale.png" />
     <Resource Include="img\user.png" />
     <Resource Include="img\zuixiaohua.png" />
@@ -153,6 +165,8 @@
     <Resource Include="img\switchLogin_Leave.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="icLauncher.ico" />
+    <Resource Include="img\defaultGameICO.png" />
     <Content Include="model\HandArm.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
