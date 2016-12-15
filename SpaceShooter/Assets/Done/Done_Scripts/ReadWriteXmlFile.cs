@@ -8,6 +8,7 @@ class ReadWriteXmlFile
 {
     public static int Speed;
     public static int Hard;
+    public static int Mode;
 
     public static void LoadXml()
     {
@@ -20,15 +21,21 @@ class ReadWriteXmlFile
         XmlNodeList xmlNodeList = xml.SelectSingleNode("objects").ChildNodes;
         //遍历所有子节点
         foreach (XmlElement xl in xmlNodeList){
-            if (xl.GetAttribute("name") == "speed"){
+            if (xl.GetAttribute("name") == "speed")
+            {
                 Speed = int.Parse(xl.InnerText);
-            }else if (xl.GetAttribute("name") == "hard") {
+            }
+            else if (xl.GetAttribute("name") == "hard")
+            {
                 Hard = int.Parse(xl.InnerText);
+            }
+            else if (xl.GetAttribute("name") == "mode") {
+                Mode = int.Parse(xl.InnerText);
             }
         }
     }
 
-    public static void updateXML(int SPEED, int HARD)
+    public static void updateXML(int SPEED, int HARD, int MODE)
     {
         string path = Application.dataPath + "/dataFile.xml";
         if (File.Exists(path))
@@ -38,17 +45,20 @@ class ReadWriteXmlFile
             XmlNodeList xmlNodeList = xml.SelectSingleNode("objects").ChildNodes;
             foreach (XmlElement xl in xmlNodeList)
             {
-                if (xl.GetAttribute("name") == "speed"){
+                if (xl.GetAttribute("name") == "speed")
+                {
                     xl.InnerText = Convert.ToString(SPEED);
-                }else if (xl.GetAttribute("name") == "hard") {
+                }
+                else if (xl.GetAttribute("name") == "hard")
+                {
                     xl.InnerText = Convert.ToString(HARD);
+                }
+                else if (xl.GetAttribute("name") == "mode") {
+                    xl.InnerText = Convert.ToString(MODE);
                 }
             }
             xml.Save(path);
         }
     }
-
-
-
 
 }
