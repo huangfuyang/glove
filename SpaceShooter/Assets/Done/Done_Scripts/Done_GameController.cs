@@ -8,7 +8,7 @@ public class Done_GameController : MonoBehaviour
     //
 	public int hazardCount=1;
 	//public float spawnWait=1;
-	public float startWait=1;
+	public float startWait=2;
     //
 	public float waveWait;
 	
@@ -40,7 +40,7 @@ public class Done_GameController : MonoBehaviour
 
         gameOver = false;
 		restart = false;
-        restartText.text = "握紧拳头生存模式； 伸开手掌练习模式";
+        restartText.text = "";
         gameOverText.text = "";
         scoreText.text = "";
         score = 0;
@@ -56,8 +56,10 @@ public class Done_GameController : MonoBehaviour
     void Update ()
 	{
 		if (gameselect) {
-             if (Input.GetKeyDown(KeyCode.Alpha1)) {
-            //if (DataConversion.FistOrPlam() == 1) { 
+            if (AdjustSpeed.ModeSliderValue==1) {
+                // if (Input.GetKeyDown(KeyCode.Alpha1)) {
+                //if (DataConversion.FistOrPlam() == 1) { 
+                gameOverText.text = "生存模式";
                 gameselect = false;
                 Done_Mover_asteroid.asteroidSpeed = (-1) * (AdjustSpeed.SpeedSliderValue);
                 Done_Mover_enemy.enemySpeed = (-1) * (AdjustSpeed.SpeedSliderValue) - 1;
@@ -67,9 +69,10 @@ public class Done_GameController : MonoBehaviour
                 gamestartModel1 = true;
             }
 
-
-             else if (Input.GetKeyDown(KeyCode.Alpha2)){
-           // else if (DataConversion.FistOrPlam() == 2)  {         
+            else if (AdjustSpeed.ModeSliderValue == 2) {
+                // else if (Input.GetKeyDown(KeyCode.Alpha2)){
+                // else if (DataConversion.FistOrPlam() == 2)  {   
+                gameOverText.text = "练习模式";
                 gameselect = false;
                 Done_Mover_asteroid.asteroidSpeed = (-1) * (AdjustSpeed.SpeedSliderValue);
                 Done_Mover_enemy.enemySpeed = (-1) * (AdjustSpeed.SpeedSliderValue) - 1;
@@ -77,8 +80,7 @@ public class Done_GameController : MonoBehaviour
                 gamestartModel2 = true;
             }
 
-            if (gamestartModel1) {
-                gameReset = true;
+            if (gamestartModel1) {             
                 gamestartModel1 = false;
                 restartText.text = "";
                 UpdateScore();
@@ -87,9 +89,7 @@ public class Done_GameController : MonoBehaviour
             }
             if (gamestartModel2){
                 //
-                practiceModel = true;
-
-                gameReset = true;
+                practiceModel = true;             
                 gamestartModel2 = false;
                 restartText.text = "";
                 UpdateScore();
@@ -97,40 +97,25 @@ public class Done_GameController : MonoBehaviour
                 Client.GetInstance();             
             }
         }
-        if (gameReset) {
-            if (Input.GetKeyDown (KeyCode.R))        
-            {
-                Application.LoadLevel(Application.loadedLevel);
-                Client.GetInstance().ReStart();
-            }
-        }
-
+        
 		if (restart)
 		{
-            if (Input.GetKeyDown(KeyCode.R)) {
+            if (Input.GetKeyDown(KeyCode.R)|| DataConversion.FistOrPlam() == 1) {
                 Application.LoadLevel(Application.loadedLevel);
                 Client.GetInstance().ReStart();
             }
-
-//                if (DataConversion.FistOrPlam()==1)
-// 			{
-//                if (DataConversion.FistOrPlam() == 0) {
-//                    Application.LoadLevel(Application.loadedLevel);
-//                    Client.GetInstance().ReStart();
-//                }              
-//			}
-
-            //if (Input.GetKeyDown(KeyCode.E))
- //           if (DataConversion.FistOrPlam()==2)
- //           {
- //               Client.GetInstance().Destroy();
-//				Application.Quit();
-//			}
-		}
+              
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Client.GetInstance().Destroy();
+				Application.Quit();
+			}
+		 }
 	}
 
     IEnumerator SpawnPractice() {
         yield return new WaitForSeconds(startWait);
+        gameOverText.text = "";
         while (true) {
             GameObject hazard1 = hazards[0];
             Vector3 spawnPosition1 = new Vector3(6, spawnValues.y, spawnValues.z);
@@ -155,7 +140,7 @@ public class Done_GameController : MonoBehaviour
 
             if (gameOver)
             {
-                restartText.text = "握一下拳重新开始 " + "手掌退出游戏";
+                restartText.text = "握一下拳重新开始";
                 restart = true;
                 break;
             }
@@ -167,7 +152,8 @@ public class Done_GameController : MonoBehaviour
     IEnumerator SpawnWaves()
 	{
 		yield return new WaitForSeconds (startWait);
-		while (true)
+        gameOverText.text = "";
+        while (true)
 		{
 			for (int i = 0; i < hazardCount; i++)
 			{

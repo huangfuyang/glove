@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <objects>
-  <contents name="speed">5</contents>
+  <contents name="speed">3</contents>
   <contents name="hard">1</contents>
+  <contents name="mode">1</contents>
 </objects>
